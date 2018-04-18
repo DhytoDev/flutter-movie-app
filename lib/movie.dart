@@ -9,9 +9,16 @@ class Movie {
       voteCount,
       voteAverage;
 
-  Movie(this.title, this.posterPath);
+  Movie({this.title, this.posterPath});
+
+  Movie.fromJson(Map json)
+      :
+        title = json['title'],
+        posterPath = json['poster_path'];
 }
 
+
+/*
 final List<Movie> movies = [
   Movie('Fifty Shades Freed',
       'https://image.tmdb.org/t/p/w1280/jjPJ4s3DWZZvI4vw8Xfi4Vqa1Q8.jpg'),
@@ -23,4 +30,4 @@ final List<Movie> movies = [
       'https://image.tmdb.org/t/p/w1280/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg'),
   Movie('Beauty and The Beast',
       'https://image.tmdb.org/t/p/w1280/tWqifoYuwLETmmasnGHO7xBjEtt.jpg'),
-];
+]; */
