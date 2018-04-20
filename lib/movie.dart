@@ -1,22 +1,32 @@
 class Movie {
-  String id,
-      title,
-      popularity,
-      posterPath,
-      backdropPath,
-      overview,
-      releaseDate,
-      voteCount,
-      voteAverage;
+  int id;
+  String title, posterPath, backdropPath, overview, releaseDate;
+  double popularity;
+  int voteCount;
+  num voteAverage;
 
-  Movie({this.title, this.posterPath});
+  Movie(
+      {this.id,
+      this.title,
+      this.popularity,
+      this.posterPath,
+      this.backdropPath,
+      this.overview,
+      this.releaseDate,
+      this.voteCount,
+      this.voteAverage});
 
   Movie.fromJson(Map json)
-      :
+      : id = json['id'],
         title = json['title'],
-        posterPath = json['poster_path'];
+        popularity = json['popularity'],
+        posterPath = json['poster_path'],
+        backdropPath = json['backdrop_path'],
+        overview = json['overview'],
+        releaseDate = json['release_date'],
+        voteCount = json['vote_count'],
+        voteAverage = json['vote_average'];
 }
-
 
 /*
 final List<Movie> movies = [

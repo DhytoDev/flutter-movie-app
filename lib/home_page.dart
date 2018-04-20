@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/movie.dart';
+import 'package:flutter_movie_app/detail_page.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   void addMovie(item) {
     setState(() {
       movies.add(Movie.fromJson(item));
-      print('title : ${movies.map((m) => m.title)}');
+//      print('title : ${movies.map((m) => m.title)}');
     });
   }
 
@@ -56,49 +57,60 @@ class _HomePageState extends State<HomePage> {
       ],
     );
 
-    createTile(Movie movie) => Material(
-          shadowColor: Colors.grey[500],
-          elevation: 15.0,
-          child: InkWell(
-            child: Card(
-              elevation: 0.0,
-              color: Colors.white,
-              child: Column(
-                children: <Widget>[
-                  Image.network('$posterPath${movie.posterPath}',
-                      fit: BoxFit.cover),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 4.0, right: 4.0),
-                      child: Center(
-                        child: Text(
-                          movie.title,
-                          softWrap: true,
-                          style: TextStyle(fontSize: 11.0),
-                          textAlign: TextAlign.center,
+    _createTile(Movie movie) => Hero(
+      tag: movie.title,
+      child: Material(
+            shadowColor: Colors.grey[500],
+            elevation: 15.0,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => DetailPage(movie: movie),
+                ));
+              },
+              child: Card(
+                elevation: 0.0,
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Image.network('$posterPath${movie.posterPath}',
+                        fit: BoxFit.cover),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 4.0, right: 4.0),
+                        child: Center(
+                          child: Text(
+                            movie.title,
+                            softWrap: true,
+                            style: TextStyle(fontSize: 11.0),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        );
+    );
 
-    final grid = GridView.count(
+    final _grid = GridView.count(
       padding: const EdgeInsets.all(16.0),
       crossAxisCount: 3,
       childAspectRatio: 2 / 3.5,
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 10.0,
-      children: movies.map((movie) => createTile(movie)).toList(),
+      children: movies.map((movie) => _createTile(movie)).toList(),
     );
 
-    return new Scaffold(
+    print(movies);
+
+    return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: _appBar,
-      body: grid,
+      body: _grid,
     );
+
   }
 }
