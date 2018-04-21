@@ -38,7 +38,7 @@ class DetailPage extends StatelessWidget {
       children: <Widget>[
         text('${movie.title}',
             isBold: true,
-            size: 20.0,
+            size: 18.0,
             padding: EdgeInsets.only(left: 16.0, top: 16.0),
             color: Colors.white),
         Padding(
@@ -84,7 +84,7 @@ class DetailPage extends StatelessWidget {
     final _topContent = Container(
       padding: const EdgeInsets.all(16.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Flexible(flex: 2, child: _poster),
           Flexible(flex: 3, child: _description),
@@ -97,7 +97,7 @@ class DetailPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          text('Overview', size: 20.0, isBold: true, color: Colors.white),
+          text('Overview', size: 18.0, isBold: true, color: Colors.white),
           text('${movie.overview}',
               size: 14.0,
               padding: const EdgeInsets.only(top: 8.0),
@@ -172,6 +172,7 @@ class DetailPage extends StatelessWidget {
             color: color,
             fontSize: size.toDouble(),
             fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            fontFamily: 'Merriweather'
           ),
         ),
       );

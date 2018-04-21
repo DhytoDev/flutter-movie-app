@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 5.0,
       title: Text(
         'Movie App',
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white, fontFamily: 'Merriweather', fontSize: 18.0),
       ),
       actions: <Widget>[
         IconButton(
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             movie.title,
                             softWrap: true,
-                            style: TextStyle(fontSize: 11.0),
+                            style: TextStyle(fontSize: 10.0, fontFamily: 'Merriweather'),
                             textAlign: TextAlign.center,
                           ),
                         ),
