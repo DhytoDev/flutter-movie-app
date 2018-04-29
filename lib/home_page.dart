@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/movie.dart';
+import 'package:flutter_movie_app/const.dart';
+import 'package:flutter_movie_app/model/movie.dart';
 import 'package:flutter_movie_app/detail_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_movie_app/widget/my_text_styles.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,10 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final String url = 'https://api.themoviedb.org/3/movie/upcoming/';
-  final String key = '678ef42a1b584848591cbd02ac3899c3';
-  final String posterPath = 'https://image.tmdb.org/t/p/w185';
-
   final List<Movie> movies = List();
 
   @override
@@ -25,12 +23,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<String> fetchUpComingMovies() async {
+
+    String url = '${Const.BASE_URL}upcoming?api_key=${Const.API_KEY}' ;
+    debugPrint('url = $url');
+
     http
-        .get('$url?api_key=$key')
+        .get(url)
         .then((response) => (response.body))
         .then(json.decode)
         .then((map) => map["results"])
-        .then((movies) => movies.forEach(addMovie));
+        .then((movies) => movies.forEach(addMovie))
+        .catchError((Exception e) => debugPrint('Error ${e.toString()}'));
+
     return 'Success';
   }
 
@@ -45,10 +49,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final _appBar = AppBar(
       elevation: 5.0,
-      title: Text(
-        'Movie App',
-        style: TextStyle(color: Colors.white, fontFamily: 'Merriweather', fontSize: 18.0),
-      ),
+      title: text('Movie App', color: Colors.white, size: 18.0),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
@@ -58,22 +59,24 @@ class _HomePageState extends State<HomePage> {
     );
 
     _createTile(Movie movie) => Hero(
-      tag: movie.title,
-      child: Material(
+          tag: movie.title,
+          child: Material(
             shadowColor: Colors.grey[500],
             elevation: 15.0,
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => DetailPage(movie: movie),
-                ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(movie: movie),
+                    ));
               },
               child: Card(
                 elevation: 0.0,
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    Image.network('$posterPath${movie.posterPath}',
+                    Image.network('${Const.POSTER_PATH_URL}${movie.posterPath}',
                         fit: BoxFit.cover),
                     Expanded(
                       child: Container(
@@ -82,7 +85,8 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             movie.title,
                             softWrap: true,
-                            style: TextStyle(fontSize: 10.0, fontFamily: 'Merriweather'),
+                            style: TextStyle(
+                                fontSize: 10.0, fontFamily: 'Merriweather'),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -93,7 +97,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-    );
+        );
 
     final _grid = GridView.count(
       padding: const EdgeInsets.all(16.0),
@@ -104,13 +108,10 @@ class _HomePageState extends State<HomePage> {
       children: movies.map((movie) => _createTile(movie)).toList(),
     );
 
-    print(movies);
-
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: _appBar,
       body: _grid,
     );
-
   }
 }

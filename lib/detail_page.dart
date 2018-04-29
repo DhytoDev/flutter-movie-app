@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/movie.dart';
+import 'package:flutter_movie_app/const.dart';
+import 'package:flutter_movie_app/model/movie.dart';
+import 'package:flutter_movie_app/widget/collapsing_toolbar.dart';
+import 'package:flutter_movie_app/widget/my_text_styles.dart';
+import 'package:flutter_movie_app/widget/trailers.dart';
 import 'package:meta/meta.dart';
 
 class DetailPage extends StatelessWidget {
   final Movie movie;
 
-  final String posterPath = 'https://image.tmdb.org/t/p/w185';
-  final String backdropPath = 'https://image.tmdb.org/t/p/w500';
-
-  final double _appBarHeight = 256.0;
-
   DetailPage({Key key, @required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('overview : ${movie.overview}');
+//    print('overview : ${movie.overview}');
 
     final _poster = Material(
       shadowColor: Colors.grey[500],
@@ -23,12 +22,8 @@ class DetailPage extends StatelessWidget {
         child: Card(
           elevation: 0.0,
           color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Image.network('$posterPath${movie.posterPath}',
-                  fit: BoxFit.cover, width: 100.0, height: 150.0),
-            ],
-          ),
+          child: Image.network('${Const.POSTER_PATH_URL}${movie.posterPath}',
+              fit: BoxFit.cover, width: 100.0, height: 150.0),
         ),
       ),
     );
@@ -36,13 +31,12 @@ class DetailPage extends StatelessWidget {
     final _description = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        text('${movie.title}',
-            isBold: true,
+        text(movie.title.isEmpty ? 'Title':'${movie.title}',
             size: 18.0,
             padding: EdgeInsets.only(left: 16.0, top: 16.0),
             color: Colors.white),
         Padding(
-          padding: EdgeInsets.only(left: 16.0, top: 8.0),
+          padding: EdgeInsets.only(left: 16.0, top: 16.0),
           child: Row(
             children: <Widget>[
               Flexible(
@@ -65,7 +59,8 @@ class DetailPage extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Flexible(
-                child: Icon(Icons.stars, color: Theme.of(context).accentColor, size: 30.0),
+                child: Icon(Icons.stars,
+                    color: Theme.of(context).accentColor, size: 30.0),
                 flex: 1,
               ),
               Flexible(
@@ -92,7 +87,7 @@ class DetailPage extends StatelessWidget {
       ),
     );
 
-    final _bottomContent = Padding(
+    final _bottomContent = Container(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +96,8 @@ class DetailPage extends StatelessWidget {
           text('${movie.overview}',
               size: 14.0,
               padding: const EdgeInsets.only(top: 8.0),
-              isBold: false, textAlign: TextAlign.justify),
+              isBold: false,
+              textAlign: TextAlign.justify),
         ],
       ),
     );
@@ -110,70 +106,20 @@ class DetailPage extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: _appBarHeight,
-//            pinned: true,
-            snap: true,
-            floating: true,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.share),
-                onPressed: () {},
-              )
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  new Hero(
-                    tag: movie.title,
-                    child: Image.network(
-                      '$backdropPath${movie.backdropPath}',
-                      fit: BoxFit.cover,
-                      height: _appBarHeight,
-                    ),
-                  ),
-                  const DecoratedBox(
-                    decoration: const BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: const Alignment(0.0, -1.0),
-                        end: const Alignment(0.0, -0.4),
-                        colors: const <Color>[
-                          const Color(0x60000000),
-                          const Color(0x00000000)
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          CollapsingToolbar(
+              title: '${movie.title}',
+              backdrop: '${Const.BACKDROP_PATH_URL}${movie.backdropPath}'),
           SliverList(
               delegate: SliverChildListDelegate(
-                  <Widget>[_topContent, _bottomContent]))
+                  <Widget>[
+                    _topContent,
+                    _bottomContent,
+                    Trailers(movie.id)
+                  ]
+              )
+          )
         ],
       ),
     );
   }
-
-  ///create text widget
-  text(String text,
-          {Color color = Colors.white70,
-          num size = 14,
-          EdgeInsetsGeometry padding = EdgeInsets.zero,
-          bool isBold = false, TextAlign textAlign = TextAlign.left}) =>
-      Padding(
-        padding: padding,
-        child: Text(
-          text,
-          textAlign: textAlign,
-          style: TextStyle(
-            color: color,
-            fontSize: size.toDouble(),
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            fontFamily: 'Merriweather'
-          ),
-        ),
-      );
 }
