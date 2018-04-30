@@ -6,6 +6,8 @@ import 'package:flutter_movie_app/const.dart';
 import 'package:flutter_movie_app/model/trailer.dart';
 import 'package:flutter_movie_app/widget/my_text_styles.dart';
 import 'package:http/http.dart' as http;
+import 'package:android_intent/android_intent.dart';
+import 'package:platform/platform.dart';
 
 class Trailers extends StatefulWidget {
   final int id;
@@ -51,6 +53,12 @@ class _TrailerItemState extends State<Trailers> {
     });
   }
 
+  _openYoutubeLink(String key) => AndroidIntent(
+          action: 'action_view',
+          data: Uri.encodeFull('https://www.youtube.com/watch?v=$key'),
+          package: 'com.android.chrome.implicit.fallback')
+      .launch();
+
   @override
   Widget build(BuildContext context) {
     _createThumbnail(Trailer trailer) => Container(
@@ -58,7 +66,11 @@ class _TrailerItemState extends State<Trailers> {
           child: Material(
             elevation: 5.0,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                if (LocalPlatform().isAndroid) {
+                  _openYoutubeLink(trailer.key);
+                }
+              },
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
