@@ -6,8 +6,7 @@ import 'package:flutter_movie_app/const.dart';
 import 'package:flutter_movie_app/model/trailer.dart';
 import 'package:flutter_movie_app/widget/my_text_styles.dart';
 import 'package:http/http.dart' as http;
-import 'package:android_intent/android_intent.dart';
-import 'package:platform/platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Trailers extends StatefulWidget {
   final int id;
@@ -34,7 +33,6 @@ class _TrailerItemState extends State<Trailers> {
   Future<String> fetchMovieTrailers() async {
     String url = '${Const.BASE_URL}${id.toString()}/videos?api_key=${Const
         .API_KEY}';
-    debugPrint('url = $url');
 
     http
         .get(url)
@@ -53,11 +51,14 @@ class _TrailerItemState extends State<Trailers> {
     });
   }
 
-  _openYoutubeLink(String key) => AndroidIntent(
-          action: 'action_view',
-          data: Uri.encodeFull('https://www.youtube.com/watch?v=$key'),
-          package: 'com.android.chrome.implicit.fallback')
-      .launch();
+  _launchURL(String key) async {
+    final url = 'https://www.youtube.com/watch?v=$key';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +68,7 @@ class _TrailerItemState extends State<Trailers> {
             elevation: 5.0,
             child: InkWell(
               onTap: () {
-                if (LocalPlatform().isAndroid) {
-                  _openYoutubeLink(trailer.key);
-                }
+                _launchURL(trailer.key);
               },
               child: Stack(
                 alignment: Alignment.center,

@@ -1,0 +1,28 @@
+PODS:
+  - android_intent (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - url_launcher (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - android_intent (from `Pods/.symlinks/plugins/android_intent/ios`)
+  - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - url_launcher (from `Pods/.symlinks/plugins/url_launcher/ios`)
+
+EXTERNAL SOURCES:
+  android_intent:
+    :path: Pods/.symlinks/plugins/android_intent/ios
+  Flutter:
+    :path: Pods/.symlinks/flutter/ios
+  url_launcher:
+    :path: Pods/.symlinks/plugins/url_launcher/ios
+
+SPEC CHECKSUMS:
+  android_intent: 96848466ee23479bdb64dc5fa04e8fe1f59200aa
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  url_launcher: 92b89c1029a0373879933c21642958c874539095
+
+PODFILE CHECKSUM: 13dcf421f4da2e937a57e8ba760ed880beae536f
+
+COCOAPODS: 1.4.0
