@@ -1,3 +1,71 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:flutter_movie_app/const.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+class MovieModel extends Model {
+  bool _isLoading =true;
+
+  bool get isLoading => _isLoading;
+
+  List<Movie> _movies = [];
+
+  List<Movie> get movies => _movies.toList();
+
+  static MovieModel of(BuildContext context) => ModelFinder<MovieModel>().of(context);
+
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+    loadData();
+  }
+
+  void _loadingStatus() {
+    print('isLoading : $_isLoading');
+  }
+
+  Future loadData() {
+    _isLoading = true;
+    _loadingStatus();
+    notifyListeners();
+
+    return fetchUpcomingMovies().then((movies) {
+      _movies = movies;
+      _movies.forEach((movie) => print('title : ${movie.title}'));
+      _isLoading = false;
+      _loadingStatus();
+      notifyListeners();
+    }).catchError((Exception e) {
+      print('Error ${e.toString()}');
+      _isLoading = false;
+      _loadingStatus();
+      notifyListeners();
+
+    });
+  }
+
+  Future<List<Movie>> fetchUpcomingMovies() async {
+    List<Movie> movieList = [];
+
+    String url = '${BASE_URL}upcoming?api_key=$API_KEY';
+
+    await http
+        .get(url)
+        .then((response) => (response.body))
+        .then(json.decode)
+        .then((map) => map["results"])
+        .then((movies) =>
+            movies.forEach((movie) => movieList.add(Movie.fromJson(movie))))
+        .catchError((Exception e) => print('Error ${e.toString()}'));
+
+    return movieList;
+  }
+}
+
 class Movie {
   int id;
   String title, posterPath, backdropPath, overview, releaseDate;

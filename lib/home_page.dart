@@ -1,50 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/const.dart';
 import 'package:flutter_movie_app/model/movie.dart';
 import 'package:flutter_movie_app/detail_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_movie_app/widget/my_text_styles.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => new _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final List<Movie> movies = List();
-
-  @override
-  void initState() {
-    super.initState();
-    this.fetchUpComingMovies();
-  }
-
-  Future<String> fetchUpComingMovies() async {
-
-    String url = '${Const.BASE_URL}upcoming?api_key=${Const.API_KEY}' ;
-    debugPrint('url = $url');
-
-    http
-        .get(url)
-        .then((response) => (response.body))
-        .then(json.decode)
-        .then((map) => map["results"])
-        .then((movies) => movies.forEach(addMovie))
-        .catchError((Exception e) => debugPrint('Error ${e.toString()}'));
-
-    return 'Success';
-  }
-
-  void addMovie(item) {
-    setState(() {
-      movies.add(Movie.fromJson(item));
-//      print('title : ${movies.map((m) => m.title)}');
-    });
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _appBar = AppBar(
@@ -76,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    Image.network('${Const.POSTER_PATH_URL}${movie.posterPath}',
+                    Image.network('$POSTER_PATH_URL${movie.posterPath}',
                         fit: BoxFit.cover),
                     Expanded(
                       child: Container(
@@ -99,19 +60,32 @@ class _HomePageState extends State<HomePage> {
           ),
         );
 
-    final _grid = GridView.count(
-      padding: const EdgeInsets.all(16.0),
-      crossAxisCount: 3,
-      childAspectRatio: 2 / 3.5,
-      crossAxisSpacing: 10.0,
-      mainAxisSpacing: 10.0,
-      children: movies.map((movie) => _createTile(movie)).toList(),
-    );
+    final _grid =
+        ScopedModelDescendant<MovieModel>(builder: (context, child, model) {
+      return Container(
+        child: model.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : GridView.count(
+                padding: const EdgeInsets.all(16.0),
+                crossAxisCount: 3,
+                childAspectRatio: 2 / 3.5,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                children:
+                    model.movies.map((movie) => _createTile(movie)).toList(),
+
+              ),
+      );
+    });
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: _appBar,
       body: _grid,
     );
+  }
+
+  _printModel(MovieModel model) {
+    print('title1 : ${model.movies.forEach((movie) => movie.title)}');
   }
 }

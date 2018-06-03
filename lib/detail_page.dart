@@ -22,7 +22,7 @@ class DetailPage extends StatelessWidget {
         child: Card(
           elevation: 0.0,
           color: Colors.white,
-          child: Image.network('${Const.POSTER_PATH_URL}${movie.posterPath}',
+          child: Image.network('$POSTER_PATH_URL${movie.posterPath}',
               fit: BoxFit.cover, width: 100.0, height: 150.0),
         ),
       ),
@@ -108,7 +108,7 @@ class DetailPage extends StatelessWidget {
         slivers: <Widget>[
           CollapsingToolbar(
               title: '${movie.title}',
-              backdrop: '${Const.BACKDROP_PATH_URL}${movie.backdropPath}'),
+              backdrop: '$BACKDROP_PATH_URL${movie.backdropPath}'),
           SliverList(
               delegate: SliverChildListDelegate(
                   <Widget>[

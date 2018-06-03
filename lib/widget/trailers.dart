@@ -31,8 +31,7 @@ class _TrailerItemState extends State<Trailers> {
   }
 
   Future<String> fetchMovieTrailers() async {
-    String url = '${Const.BASE_URL}${id.toString()}/videos?api_key=${Const
-        .API_KEY}';
+    String url = '$BASE_URL${id.toString()}/videos?api_key=$API_KEY';
 
     http
         .get(url)
