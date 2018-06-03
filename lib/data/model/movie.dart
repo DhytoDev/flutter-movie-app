@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:flutter_movie_app/const.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_movie_app/data/repository/movie_repo.dart';
 
 class MovieModel extends Model {
-  bool _isLoading =true;
+  bool _isLoading = true;
 
   bool get isLoading => _isLoading;
 
@@ -16,7 +12,14 @@ class MovieModel extends Model {
 
   List<Movie> get movies => _movies.toList();
 
-  static MovieModel of(BuildContext context) => ModelFinder<MovieModel>().of(context);
+  static MovieModel of(BuildContext context) =>
+      ModelFinder<MovieModel>().of(context);
+
+  MovieRepo _repository;
+
+  MovieModel() {
+    _repository = new MovieRepoImpl();
+  }
 
   @override
   void addListener(VoidCallback listener) {
@@ -33,7 +36,7 @@ class MovieModel extends Model {
     _loadingStatus();
     notifyListeners();
 
-    return fetchUpcomingMovies().then((movies) {
+    return _repository.fetchUpcomingMovies().then((movies) {
       _movies = movies;
       _movies.forEach((movie) => print('title : ${movie.title}'));
       _isLoading = false;
@@ -44,25 +47,7 @@ class MovieModel extends Model {
       _isLoading = false;
       _loadingStatus();
       notifyListeners();
-
     });
-  }
-
-  Future<List<Movie>> fetchUpcomingMovies() async {
-    List<Movie> movieList = [];
-
-    String url = '${BASE_URL}upcoming?api_key=$API_KEY';
-
-    await http
-        .get(url)
-        .then((response) => (response.body))
-        .then(json.decode)
-        .then((map) => map["results"])
-        .then((movies) =>
-            movies.forEach((movie) => movieList.add(Movie.fromJson(movie))))
-        .catchError((Exception e) => print('Error ${e.toString()}'));
-
-    return movieList;
   }
 }
 

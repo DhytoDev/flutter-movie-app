@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/home_page.dart';
+import 'package:flutter_movie_app/ui/pages/home_page.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter_movie_app/model/movie.dart';
+import 'package:flutter_movie_app/data/model/movie.dart';
 
 void main() {
   runApp(new MyApp());

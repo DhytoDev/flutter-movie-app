@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/const.dart';
-import 'package:flutter_movie_app/model/movie.dart';
-import 'package:flutter_movie_app/detail_page.dart';
-import 'package:flutter_movie_app/widget/my_text_styles.dart';
+import 'package:flutter_movie_app/utils/const.dart';
+import 'package:flutter_movie_app/data/model/movie.dart';
+import 'package:flutter_movie_app/ui/pages/detail_page.dart';
+import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class HomePage extends StatelessWidget {
