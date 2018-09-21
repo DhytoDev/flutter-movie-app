@@ -12,6 +12,7 @@ class CollapsingToolbar extends StatelessWidget {
     return SliverAppBar(
       expandedHeight: _appBarHeight,
       pinned: true,
+      floating: false,
       title: text(title, color: Colors.white, size: 18.0),
       actions: <Widget>[
         IconButton(

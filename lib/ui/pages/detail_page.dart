@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/utils/const.dart';
-import 'package:flutter_movie_app/data/model/movie.dart';
+import 'package:flutter_movie_app/data/model/movie_response.dart';
 import 'package:flutter_movie_app/ui/widget/collapsing_toolbar.dart';
 import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
 import 'package:flutter_movie_app/ui/widget/trailers.dart';
+import 'package:flutter_movie_app/utils/const.dart';
 import 'package:meta/meta.dart';
 
 class DetailPage extends StatelessWidget {
@@ -31,7 +31,7 @@ class DetailPage extends StatelessWidget {
     final _description = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        text(movie.title.isEmpty ? 'Title':'${movie.title}',
+        text(movie.title.isEmpty ? 'Title' : '${movie.title}',
             size: 18.0,
             padding: EdgeInsets.only(left: 16.0, top: 16.0),
             color: Colors.white),
@@ -104,21 +104,17 @@ class DetailPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          CollapsingToolbar(
-              title: '${movie.title}',
-              backdrop: '$BACKDROP_PATH_URL${movie.backdropPath}'),
-          SliverList(
-              delegate: SliverChildListDelegate(
-                  <Widget>[
-                    _topContent,
-                    _bottomContent,
-                    Trailers(movie.id)
-                  ]
-              )
-          )
-        ],
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            CollapsingToolbar(
+                title: '${movie.title}',
+                backdrop: '$BACKDROP_PATH_URL${movie.backdropPath}'),
+          ];
+        },
+        body: ListView(
+          children: <Widget>[_topContent, _bottomContent, Trailers(movie.id)],
+        ),
       ),
     );
   }

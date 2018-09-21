@@ -1,30 +1,37 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-import 'package:flutter_movie_app/data/model/movie.dart';
+import 'package:flutter_movie_app/data/model/movie_response.dart';
 import 'package:flutter_movie_app/utils/const.dart';
+import 'package:http/http.dart' as http;
+
+MovieRepo movieRepo = MovieRepoImpl();
 
 abstract class MovieRepo {
-  Future<List<Movie>> fetchUpcomingMovies();
+  Future<MovieResponse> fetchUpcomingMovies();
 }
 
 class MovieRepoImpl implements MovieRepo {
   @override
-  Future<List<Movie>> fetchUpcomingMovies() async {
-    List<Movie> movieList = [];
+  Future<MovieResponse> fetchUpcomingMovies() async {
+    /*final uri = Uri.https(BASE_URL, 'upcoming', <String, String>{
+      'api_key': API_KEY,
+      'languange': 'en-US',
+      'page': '$pageIndex',
+    });*/
 
-    String url = '${BASE_URL}upcoming?api_key=$API_KEY';
+    final url = '$BASE_URL/upcoming?api_key=$API_KEY';
 
-    await http
+    var response = await http
         .get(url)
         .then((response) => (response.body))
         .then(json.decode)
-        .then((map) => map["results"])
-        .then((movies) =>
-            movies.forEach((movie) => movieList.add(Movie.fromJson(movie))))
         .catchError((Exception e) => print('Error ${e.toString()}'));
 
-    return movieList;
+    print(response.toString());
+
+    MovieResponse movieResponse = MovieResponse.fromJSON(response);
+
+    return movieResponse;
   }
 }
