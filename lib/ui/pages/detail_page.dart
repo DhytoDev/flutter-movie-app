@@ -13,8 +13,6 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    print('overview : ${movie.overview}');
-
     final _poster = Material(
       shadowColor: Colors.grey[500],
       elevation: 15.0,

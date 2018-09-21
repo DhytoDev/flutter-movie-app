@@ -66,7 +66,8 @@ class HomePage extends StatelessWidget {
       body: StreamBuilder(
         stream: bloc.outMoviesList,
         builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
 
           final movies = snapshot.data;
 
