@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_movie_app/data/bloc/bloc_provider.dart';
 import 'package:flutter_movie_app/data/model/movie_response.dart';
 import 'package:flutter_movie_app/data/model/trailer.dart';
@@ -11,17 +13,15 @@ class MovieBloc implements BlocBase {
 
   Stream<List<Movie>> get outMoviesList => _moviesController.stream;
 
-//  PublishSubject<int> _indexController = PublishSubject<int>();
-//
-//  Sink<int> get inMovieIndex => _indexController.sink;
-
-  ReplaySubject<int> _movieId = ReplaySubject<int>();
+  BehaviorSubject<int> _movieId = BehaviorSubject<int>();
 
   Sink<int> get movieId => _movieId.sink;
 
   Stream<List<Trailer>> _trailers = Stream.empty();
 
   Stream<List<Trailer>> get trailers => _trailers;
+
+  StreamController _controller = StreamController();
 
   MovieBloc() {
     _handleFetchedPage();
@@ -36,6 +36,7 @@ class MovieBloc implements BlocBase {
   void dispose() {
     _moviesController.close();
     _movieId.close();
+    _controller.close();
   }
 
   void _handleFetchedPage() {

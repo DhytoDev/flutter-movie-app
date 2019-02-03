@@ -9,6 +9,7 @@ dependencies:
   url_launcher: ^3.0.0
   scoped_model: ^0.3.0
   rxdart: ^0.18.1
+  http:
 
 dev_dependencies:
   flutter_test:
