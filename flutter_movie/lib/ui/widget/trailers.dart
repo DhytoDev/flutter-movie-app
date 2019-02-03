@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/data/bloc/bloc_provider.dart';
-import 'package:flutter_movie_app/data/bloc/movie_bloc.dart';
-import 'package:flutter_movie_app/data/model/trailer.dart';
+import 'package:flutter_movie_app/di/inject.dart';
 import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
+import 'package:movie_bloc/src/bloc/movie_bloc.dart';
+import 'package:movie_bloc/src/model/trailer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Trailers extends StatelessWidget {
@@ -21,7 +21,7 @@ class Trailers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MovieBloc bloc = BlocProvider.of<MovieBloc>(context);
+    final MovieBloc bloc = Injection.injector.get<MovieBloc>();
 
     bloc.movieId.add(id);
 
@@ -58,7 +58,7 @@ class Trailers extends StatelessWidget {
               constraints: const BoxConstraints(maxHeight: 150.0),
               margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               child: StreamBuilder(
-                stream: bloc.trailers,
+                stream: bloc.trailersStream,
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Trailer>> snapshot) {
                   if (!snapshot.hasData) return Container();

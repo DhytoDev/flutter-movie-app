@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/data/bloc/bloc_provider.dart';
-import 'package:flutter_movie_app/data/bloc/movie_bloc.dart';
-import 'package:flutter_movie_app/data/model/movie_response.dart';
+import 'package:flutter_movie_app/di/inject.dart';
 import 'package:flutter_movie_app/ui/pages/detail_page.dart';
 import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
 import 'package:flutter_movie_app/utils/const.dart';
+import 'package:movie_bloc/src/bloc/movie_bloc.dart';
+import 'package:movie_bloc/src/model/movie.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final MovieBloc bloc = BlocProvider.of<MovieBloc>(context);
+    final MovieBloc bloc = Injection.injector.get<MovieBloc>();
 
     final _appBar = AppBar(
       elevation: 5.0,
@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: _appBar,
       body: StreamBuilder(
-        stream: bloc.outMoviesList,
+        stream: bloc.moviesStream,
         builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());

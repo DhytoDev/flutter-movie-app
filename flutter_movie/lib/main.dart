@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/data/bloc/bloc_provider.dart';
-import 'package:flutter_movie_app/data/bloc/movie_bloc.dart';
+import 'package:flutter_movie_app/di/inject.dart';
 import 'package:flutter_movie_app/ui/pages/home_page.dart';
 
 void main() {
-  runApp(BlocProvider<MovieBloc>(
+  /* runApp(BlocProvider<MovieBloc>(
     bloc: MovieBloc(),
     child: MyApp(),
-  ));
+  ));*/
+
+  Injection.initInjection();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
