@@ -34,9 +34,11 @@ class MovieBloc extends BaseBloc {
   }
 
   void _getTrailers() {
-    _movieId.listen((id) => _movieRepo
-        .getTrailersByMovieId(id)
-        .listen((trailers) => trailersSink.add(trailers)));
+    _movieId.listen(
+        (id) => _movieRepo.getTrailersByMovieId(id).listen(
+              (trailers) => trailersSink.add(trailers),
+            ),
+        onError: (err) => error.add(err.toString()));
   }
 
   @override

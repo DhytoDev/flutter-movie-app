@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/di/inject.dart';
+import 'package:flutter_movie_app/ui/base/base_bloc_scaffold_widget.dart';
 import 'package:flutter_movie_app/ui/pages/detail_page.dart';
 import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
 import 'package:flutter_movie_app/utils/const.dart';
@@ -60,8 +61,7 @@ class HomePage extends StatelessWidget {
           ),
         );
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+    return BaseBlocScaffoldWidget(
       appBar: _appBar,
       body: StreamBuilder(
         stream: bloc.moviesStream,
