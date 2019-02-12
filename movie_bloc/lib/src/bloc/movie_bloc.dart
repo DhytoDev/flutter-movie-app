@@ -27,7 +27,7 @@ class MovieBloc extends BaseBloc {
   }
 
   void _getMovies() {
-    _movieRepo.getMovies().listen(
+    _movieRepo.getNowPlayingMovies().listen(
           (movies) => moviesSink.add(movies),
           onError: (err) => error.add(err.toString()),
         );

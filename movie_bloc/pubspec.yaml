@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   rxdart:
-  http:
+  dio:
 
 dev_dependencies:
   test:

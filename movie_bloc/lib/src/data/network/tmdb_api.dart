@@ -1,40 +1,23 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:movie_bloc/src/model/movie.dart';
 import 'package:movie_bloc/src/model/trailer.dart';
 
 import 'endpoint.dart';
 
 class TMDBApi {
-  Future<MovieResponse> getMovies() async {
-    final url = '$BASE_URL/upcoming?api_key=$API_KEY';
+  Future<MovieResponse> getNowPlayingMovies() async {
+    var response = await Config.instance()
+        .get('/now_playing', queryParameters: {"api_key": API_KEY});
 
-    var response = await http
-        .get(url)
-        .then((response) => (response.body))
-        .then(json.decode)
-        .catchError((Exception e) => print('Error ${e.toString()}'));
-
-    MovieResponse movieResponse = MovieResponse.fromJSON(response);
-
-    return movieResponse;
+    return MovieResponse.fromJSON(response.data);
   }
 
   Future<List<Trailer>> getTrailersByMovieId(int movieId) async {
-    final url = '$BASE_URL/$movieId/videos?api_key=$API_KEY';
-
     List<Trailer> trailers = [];
 
-    var response = await http
-        .get(url)
-        .then((response) => response.body)
-        .then(json.decode)
-        .then((map) => map['results']);
+    var response = await Config.instance()
+        .get('/$movieId/videos', queryParameters: {"api_key": API_KEY});
 
-    print(response);
-
-    response.forEach((trailer) => trailers.add(Trailer.fromJson(trailer)));
+    response.data.forEach((trailer) => trailers.add(Trailer.fromJson(trailer)));
 
     return trailers;
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/di/inject.dart';
 import 'package:flutter_movie_app/ui/base/base_bloc_scaffold_widget.dart';
+import 'package:flutter_movie_app/ui/common//custom_shape_clipper.dart';
+import 'package:flutter_movie_app/ui/common//my_text_styles.dart';
 import 'package:flutter_movie_app/ui/pages/detail_page.dart';
-import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
 import 'package:flutter_movie_app/utils/const.dart';
 import 'package:movie_bloc/src/bloc/movie_bloc.dart';
 import 'package:movie_bloc/src/model/movie.dart';
@@ -62,25 +63,44 @@ class HomePage extends StatelessWidget {
         );
 
     return BaseBlocScaffoldWidget(
-      appBar: _appBar,
-      body: StreamBuilder(
-        stream: bloc.moviesStream,
-        builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
+        bloc: bloc,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              ClipPath(
+                clipper: CustomShapeClipper(),
+                child: Container(
+                  height: 300,
+                  color: Colors.yellow,
+                ),
+              ),
+              StreamBuilder(
+                stream: bloc.moviesStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Movie>> snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
 
-          final movies = snapshot.data;
+                  final movies = snapshot.data;
 
-          return GridView.count(
-            padding: const EdgeInsets.all(16.0),
-            crossAxisCount: 3,
-            childAspectRatio: 2 / 3.5,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-            children: movies.map((movie) => _createTile(movie)).toList(),
-          );
-        },
-      ),
-    );
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: movies.map((movie) => Text(movie.title)).toList(),
+                  );
+
+                  /* return GridView.count(
+                    padding: const EdgeInsets.all(16.0),
+                    crossAxisCount: 3,
+                    childAspectRatio: 2 / 3.5,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                    children:
+                        movies.map((movie) => _createTile(movie)).toList(),
+                  );*/
+                },
+              ),
+            ],
+          ),
+        ));
   }
 }
