@@ -19,6 +19,6 @@ class MovieRepoImpl extends MovieRepo {
   @override
   Observable<List<Trailer>> getTrailersByMovieId(int movieId) {
     return Observable.fromFuture(TMDBApi().getTrailersByMovieId(movieId))
-        .map((trailers) => trailers);
+        .map((trailerResponse) => trailerResponse.trailers);
   }
 }

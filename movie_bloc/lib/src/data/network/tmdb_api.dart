@@ -11,14 +11,10 @@ class TMDBApi {
     return MovieResponse.fromJSON(response.data);
   }
 
-  Future<List<Trailer>> getTrailersByMovieId(int movieId) async {
-    List<Trailer> trailers = [];
-
+  Future<TrailerResponse> getTrailersByMovieId(int movieId) async {
     var response = await Config.instance()
         .get('/$movieId/videos', queryParameters: {"api_key": API_KEY});
 
-    response.data.forEach((trailer) => trailers.add(Trailer.fromJson(trailer)));
-
-    return trailers;
+    return TrailerResponse.fromJson(response.data);
   }
 }
