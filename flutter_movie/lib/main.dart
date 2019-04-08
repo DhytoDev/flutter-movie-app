@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/di/inject.dart';
-import 'package:flutter_movie_app/ui/pages/home_page.dart';
+import 'package:flutter_movie_app/ui/pages/home/home_page.dart';
 
 void main() {
-  /* runApp(BlocProvider<MovieBloc>(
-    bloc: MovieBloc(),
-    child: MyApp(),
-  ));*/
-
   Injection.initInjection();
 
   runApp(MyApp());

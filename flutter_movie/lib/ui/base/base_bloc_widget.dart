@@ -1,6 +1,6 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/ui/base/base_widget.dart';
-import 'package:movie_bloc/movie_bloc.dart';
 
 class BaseBlocWidget extends BaseWidget {
   final Widget _body;

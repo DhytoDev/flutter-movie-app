@@ -1,13 +1,8 @@
-import 'package:movie_bloc/src/data/network/tmdb_api.dart';
-import 'package:movie_bloc/src/model/movie.dart';
-import 'package:movie_bloc/src/model/trailer.dart';
+import 'package:core/src/data/network/tmdb_api.dart';
+import 'package:core/src/domain/repositories/movie_repository.dart';
+import 'package:core/src/model/movie.dart';
+import 'package:core/src/model/trailer.dart';
 import 'package:rxdart/rxdart.dart';
-
-abstract class MovieRepo {
-  Observable<List<Movie>> getNowPlayingMovies();
-
-  Observable<List<Trailer>> getTrailersByMovieId(int movieId);
-}
 
 class MovieRepoImpl extends MovieRepo {
   @override

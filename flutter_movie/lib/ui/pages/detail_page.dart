@@ -1,10 +1,9 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/ui/widget/collapsing_toolbar.dart';
-import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
-import 'package:flutter_movie_app/ui/widget/trailers.dart';
-import 'package:flutter_movie_app/utils/const.dart';
+import 'package:flutter_movie_app/ui/common//collapsing_toolbar.dart';
+import 'package:flutter_movie_app/ui/common//my_text_styles.dart';
+import 'package:flutter_movie_app/ui/common//trailers.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_bloc/src/model/movie.dart';
 
 class DetailPage extends StatelessWidget {
   final Movie movie;

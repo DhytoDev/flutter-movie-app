@@ -1,6 +1,5 @@
+import 'package:core/core.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
-import 'package:movie_bloc/src/bloc/movie_bloc.dart';
-import 'package:movie_bloc/src/repository/movie_repo.dart';
 
 class Injection {
   static Injector injector;
@@ -9,7 +8,12 @@ class Injection {
     injector = Injector.getInjector();
 
     injector.map<MovieRepo>((i) => MovieRepoImpl());
-    injector.map<MovieBloc>((i) => MovieBloc(injector.get<MovieRepo>()),
+    injector.map<GetNowPlayingMovies>(
+        (i) => GetNowPlayingMovies(injector.get<MovieRepo>()));
+    injector.map<GetTrailers>((i) => GetTrailers(injector.get<MovieRepo>()));
+    injector.map<MovieBloc>(
+        (i) => MovieBloc(
+            injector.get<GetNowPlayingMovies>(), injector.get<GetTrailers>()),
         isSingleton: false);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
+import 'package:flutter_movie_app/ui/common//my_text_styles.dart';
 
 class CollapsingToolbar extends StatelessWidget {
   final double _appBarHeight = 256.0;

@@ -1,5 +1,5 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_bloc/movie_bloc.dart';
 
 abstract class BaseWidget extends StatefulWidget {
   final BaseBloc baseBloc;

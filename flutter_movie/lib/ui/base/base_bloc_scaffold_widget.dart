@@ -1,6 +1,6 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/ui/base/base_bloc_widget.dart';
-import 'package:movie_bloc/src/bloc/base_bloc.dart';
 
 class BaseBlocScaffoldWidget extends BaseBlocWidget {
   final AppBar appBar;
@@ -12,7 +12,8 @@ class BaseBlocScaffoldWidget extends BaseBlocWidget {
   Widget body(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBar,
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: appBar ?? null,
         body: super.body(context),
       ),
     );

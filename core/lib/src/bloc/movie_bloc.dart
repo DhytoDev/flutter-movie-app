@@ -1,7 +1,8 @@
-import 'package:movie_bloc/src/bloc/base_bloc.dart';
-import 'package:movie_bloc/src/model/movie.dart';
-import 'package:movie_bloc/src/model/trailer.dart';
-import 'package:movie_bloc/src/repository/movie_repo.dart';
+import 'package:core/src/bloc/base_bloc.dart';
+import 'package:core/src/domain/interactors/get_now_playing_movies.dart';
+import 'package:core/src/domain/interactors/get_trailers.dart';
+import 'package:core/src/model/movie.dart';
+import 'package:core/src/model/trailer.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MovieBloc extends BaseBloc {
@@ -19,15 +20,16 @@ class MovieBloc extends BaseBloc {
 
   Stream<List<Trailer>> get trailersStream => _trailers.stream;
 
-  MovieRepo _movieRepo;
+  GetNowPlayingMovies _getNowPlayingMoviesInteractor;
+  GetTrailers _getTrailersInteractor;
 
-  MovieBloc(this._movieRepo) {
+  MovieBloc(this._getNowPlayingMoviesInteractor, this._getTrailersInteractor) {
     _getMovies();
     _getTrailers();
   }
 
   void _getMovies() {
-    _movieRepo.getNowPlayingMovies().listen(
+    _getNowPlayingMoviesInteractor.getNowPlayingMovies().listen(
           (movies) => moviesSink.add(movies),
           onError: (err) => error.add(err.toString()),
         );
@@ -35,7 +37,7 @@ class MovieBloc extends BaseBloc {
 
   void _getTrailers() {
     _movieId.listen(
-        (id) => _movieRepo.getTrailersByMovieId(id).listen(
+        (id) => _getTrailersInteractor.getTrailers(id).listen(
               (trailers) => trailersSink.add(trailers),
             ),
         onError: (err) => error.add(err.toString()));

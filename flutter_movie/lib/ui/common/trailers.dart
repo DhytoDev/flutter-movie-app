@@ -1,8 +1,7 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/di/inject.dart';
-import 'package:flutter_movie_app/ui/widget/my_text_styles.dart';
-import 'package:movie_bloc/src/bloc/movie_bloc.dart';
-import 'package:movie_bloc/src/model/trailer.dart';
+import 'package:flutter_movie_app/ui/common//my_text_styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Trailers extends StatelessWidget {

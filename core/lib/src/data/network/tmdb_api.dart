@@ -1,5 +1,6 @@
-import 'package:movie_bloc/src/model/movie.dart';
-import 'package:movie_bloc/src/model/trailer.dart';
+import 'dart:async';
+
+import 'package:core/core.dart';
 
 import 'endpoint.dart';
 

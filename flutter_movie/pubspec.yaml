@@ -12,8 +12,8 @@ dependencies:
   http:
   flutter_simple_dependency_injection:
 
-  movie_bloc:
-    path: ../movie_bloc
+  core:
+    path: ../core
 
 dev_dependencies:
   flutter_test:
