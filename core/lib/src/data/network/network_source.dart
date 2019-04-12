@@ -4,7 +4,7 @@ import 'package:core/core.dart';
 
 import 'endpoint.dart';
 
-class TMDBApi {
+class MovieNetworkSource {
   Future<MovieResponse> getNowPlayingMovies() async {
     var response = await Config.instance()
         .get('/now_playing', queryParameters: {"api_key": API_KEY});
