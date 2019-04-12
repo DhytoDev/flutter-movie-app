@@ -9,7 +9,7 @@ class Trailers extends StatelessWidget {
 
   final int id;
 
-  _launchURL(String key) async {
+  void _launchURL(String key) async {
     final url = 'https://www.youtube.com/watch?v=$key';
     if (await canLaunch(url)) {
       await launch(url);
@@ -20,7 +20,7 @@ class Trailers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MovieBloc bloc = Injection.injector.get<MovieBloc>();
+    final TrailerBloc bloc = Injection.injector.get<TrailerBloc>();
 
     bloc.movieId.add(id);
 

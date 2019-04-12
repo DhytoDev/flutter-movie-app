@@ -12,8 +12,9 @@ class Injection {
         (i) => GetNowPlayingMovies(injector.get<MovieRepo>()));
     injector.map<GetTrailers>((i) => GetTrailers(injector.get<MovieRepo>()));
     injector.map<MovieBloc>(
-        (i) => MovieBloc(
-            injector.get<GetNowPlayingMovies>(), injector.get<GetTrailers>()),
+        (i) => MovieBloc(injector.get<GetNowPlayingMovies>()),
+        isSingleton: false);
+    injector.map<TrailerBloc>((i) => TrailerBloc(injector.get<GetTrailers>()),
         isSingleton: false);
   }
 }

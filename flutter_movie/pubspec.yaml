@@ -7,9 +7,7 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   url_launcher: ^3.0.0
-  scoped_model: ^0.3.0
-  rxdart: ^0.18.1
-  http:
+  rxdart:
   flutter_simple_dependency_injection:
 
   core:
