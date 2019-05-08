@@ -8,6 +8,9 @@ environment:
 dependencies:
   flutter_web: any
   flutter_web_ui: any
+  flutter_simple_dependency_injection:
+  core:
+    path: ../core
 
 dev_dependencies:
   build_runner: any

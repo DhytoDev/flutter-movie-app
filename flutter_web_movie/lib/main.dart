@@ -1,17 +1,22 @@
+import 'package:core/core.dart';
 import 'package:flutter_web/material.dart';
+import 'package:flutter_web_movie/di/inject.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Injection.initInjection();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Movie App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Movie App'),
     );
   }
 }
@@ -23,39 +28,99 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final double width = MediaQuery.of(context).size.width;
+
+    final MovieBloc bloc = Injection.injector.get<MovieBloc>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (choose the "Toggle Debug Paint" action
-          // from the Flutter Inspector in Android Studio, or the "Toggle Debug
-          // Paint" command in Visual Studio Code) to see the wireframe for each
-          // widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Hello, World!',
-            ),
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: StreamBuilder(
+        stream: bloc.errorMessage(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (!snapshot.hasData) {
+            return width >= 600
+                ? MovieTile(
+                    bloc: bloc,
+                    count: 4,
+                  )
+                : MovieTile(bloc: bloc, count: 2);
+          }
+
+          return Text('Error : ${snapshot.data}');
+        },
+      ),
     );
   }
+}
+
+class MovieTile extends StatelessWidget {
+  const MovieTile({
+    Key key,
+    @required this.bloc,
+    @required this.count,
+  }) : super(key: key);
+
+  final MovieBloc bloc;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: bloc.getMovies(),
+      builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: GridView.count(
+            crossAxisCount: count,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 2 / 3.5,
+            children: snapshot.data
+                .map((movie) => _createTile(movie, context))
+                .toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _createTile(Movie movie, BuildContext context) => Material(
+        shadowColor: Colors.grey[500],
+        elevation: 15.0,
+        borderRadius: BorderRadius.circular(8),
+        child: Card(
+          elevation: 0.0,
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Image.network(
+                '$POSTER_PATH_URL${movie.posterPath}',
+                fit: BoxFit.contain,
+                width: MediaQuery.of(context).size.width,
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 4.0, right: 4.0),
+                  child: Center(
+                    child: Text(
+                      movie.title,
+                      softWrap: true,
+                      style: TextStyle(fontSize: 12.0),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
 }
