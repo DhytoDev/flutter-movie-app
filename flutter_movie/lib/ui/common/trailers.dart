@@ -57,7 +57,7 @@ class Trailers extends StatelessWidget {
               constraints: const BoxConstraints(maxHeight: 150.0),
               margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               child: StreamBuilder(
-                stream: bloc.trailersStream,
+                stream: bloc.getTrailers(),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Trailer>> snapshot) {
                   if (!snapshot.hasData) return Container();

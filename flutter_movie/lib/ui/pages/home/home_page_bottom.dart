@@ -72,7 +72,7 @@ class HomePageBottom extends StatelessWidget {
           constraints: BoxConstraints(maxHeight: 250),
           padding: const EdgeInsets.all(16.0),
           child: StreamBuilder(
-            stream: bloc.moviesStream,
+            stream: bloc.getMovies(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
               if (!snapshot.hasData || snapshot.hasError)
