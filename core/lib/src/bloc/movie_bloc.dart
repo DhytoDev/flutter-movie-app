@@ -1,33 +1,20 @@
-import 'dart:async';
-
+import 'package:core/core.dart';
 import 'package:core/src/bloc/base_bloc.dart';
 import 'package:core/src/domain/interactors/get_now_playing_movies.dart';
-import 'package:core/src/model/movie.dart';
-import 'package:rxdart/rxdart.dart';
 
 class MovieBloc extends BaseBloc {
-  PublishSubject<List<Movie>> _moviesController = PublishSubject<List<Movie>>();
+  GetNowPlayingMovies _getNowPlayingMoviesUseCase;
 
-  Sink<List<Movie>> get moviesSink => _moviesController.sink;
-
-  Stream<List<Movie>> get moviesStream => _moviesController.stream;
-
-  GetNowPlayingMovies _getNowPlayingMoviesInteractor;
-
-  MovieBloc(this._getNowPlayingMoviesInteractor) {
-    _getMovies();
+  MovieBloc(this._getNowPlayingMoviesUseCase) {
+    _getNowPlayingMoviesUseCase.execute();
   }
 
-  void _getMovies() {
-    _getNowPlayingMoviesInteractor.getNowPlayingMovies().listen(
-          (movies) => moviesSink.add(movies),
-          onError: (err) => error.add(err.toString()),
-        );
-  }
+  Stream<List<Movie>> getMovies() => _getNowPlayingMoviesUseCase.movies;
+
+  Stream<String> errorMessage() => _getNowPlayingMoviesUseCase.error;
 
   @override
   void dispose() {
     super.dispose();
-    _moviesController.close();
   }
 }

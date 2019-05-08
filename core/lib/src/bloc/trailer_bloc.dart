@@ -1,34 +1,27 @@
 import 'package:core/core.dart';
+import 'package:core/src/domain/interactors/get_trailers.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TrailerBloc extends BaseBloc {
   BehaviorSubject<int> _movieId = BehaviorSubject<int>();
-  BehaviorSubject<List<Trailer>> _trailers = BehaviorSubject();
 
   Sink<int> get movieId => _movieId.sink;
 
-  Sink<List<Trailer>> get trailersSink => _trailers.sink;
+  final GetTrailers _getTrailersUseCase;
 
-  Stream<List<Trailer>> get trailersStream => _trailers.stream;
-
-  GetTrailers _getTrailersInteractor;
-
-  TrailerBloc(this._getTrailersInteractor) {
-    _getTrailers();
+  TrailerBloc(this._getTrailersUseCase) {
+    _movieId.stream
+        .listen((movieId) => _getTrailersUseCase.execute(params: movieId));
   }
 
-  void _getTrailers() {
-    _movieId.listen(
-        (id) => _getTrailersInteractor.getTrailers(id).listen(
-              (trailers) => trailersSink.add(trailers),
-            ),
-        onError: (err) => error.add(err.toString()));
-  }
+  Stream<List<Trailer>> getTrailers() => _getTrailersUseCase.trailers;
+
+  Stream<String> errorMessage() => _getTrailersUseCase.errorMessage;
 
   @override
   void dispose() {
     super.dispose();
     _movieId.close();
-    _trailers.close();
+    _getTrailersUseCase.dispose();
   }
 }
