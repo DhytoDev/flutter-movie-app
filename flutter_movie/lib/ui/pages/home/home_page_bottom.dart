@@ -80,6 +80,8 @@ class HomePageBottom extends StatelessWidget {
 
               List<Movie> movies = snapshot.data;
 
+              print('size : ${movies.length}');
+
               return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: movies.length,
