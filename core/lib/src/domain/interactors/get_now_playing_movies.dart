@@ -20,7 +20,7 @@ class GetNowPlayingMovies extends UseCase<MovieRepo, void> {
   void execute({params}) {
     repository.getNowPlayingMovies().listen(
         (movies) => _movies.sink.add(movies),
-        onError: (error) => _error.sink.add(error));
+        onError: (error) => _error.sink.add(error.toString()));
   }
 
   @override

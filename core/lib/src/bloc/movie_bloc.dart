@@ -7,6 +7,9 @@ class MovieBloc extends BaseBloc {
 
   MovieBloc(this._getNowPlayingMoviesUseCase) {
     _getNowPlayingMoviesUseCase.execute();
+
+    _getNowPlayingMoviesUseCase.error
+        .listen((errorMessage) => error.add(errorMessage));
   }
 
   Stream<List<Movie>> getMovies() => _getNowPlayingMoviesUseCase.movies;
@@ -16,5 +19,6 @@ class MovieBloc extends BaseBloc {
   @override
   void dispose() {
     super.dispose();
+    _getNowPlayingMoviesUseCase.dispose();
   }
 }

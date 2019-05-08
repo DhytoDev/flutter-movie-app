@@ -9,8 +9,8 @@ class Config {
   static Dio instance() {
     Dio dio = Dio();
     dio.options.baseUrl = BASE_URL;
-    dio.options.connectTimeout = 5000;
-    dio.options.receiveTimeout = 3000;
+    dio.options.connectTimeout = 20000;
+    dio.options.receiveTimeout = 10000;
 
     return dio;
   }

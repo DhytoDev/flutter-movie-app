@@ -11,6 +11,8 @@ class MovieResponse {
         movies = (json['results'] as List)
             .map((json) => Movie.fromJSON(json))
             .toList();
+
+  static errorValue(String error) => print(error);
 }
 
 class Movie {

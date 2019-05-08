@@ -21,7 +21,7 @@ class GetTrailers extends UseCase<MovieRepo, int> {
   void execute({int params}) {
     repository.getTrailersByMovieId(params).listen(
         (trailers) => _trailers.sink.add(trailers),
-        onError: (error) => _errorMessage.sink.add(error));
+        onError: (error) => _errorMessage.sink.add(error.toString()));
   }
 
   @override

@@ -12,6 +12,9 @@ class TrailerBloc extends BaseBloc {
   TrailerBloc(this._getTrailersUseCase) {
     _movieId.stream
         .listen((movieId) => _getTrailersUseCase.execute(params: movieId));
+
+    _getTrailersUseCase.errorMessage
+        .listen((errorMessage) => error.add(errorMessage));
   }
 
   Stream<List<Trailer>> getTrailers() => _getTrailersUseCase.trailers;

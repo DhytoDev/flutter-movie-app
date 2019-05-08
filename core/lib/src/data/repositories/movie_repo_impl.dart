@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class MovieRepoImpl extends MovieRepo {
   @override
   Observable<List<Movie>> getNowPlayingMovies() {
-    return Observable.fromFuture(MovieNetworkSource().getNowPlayingMovies())
+    return Observable.fromFuture(MovieNetworkSource().getMovies())
         .map((movieResponse) => movieResponse.movies);
   }
 
