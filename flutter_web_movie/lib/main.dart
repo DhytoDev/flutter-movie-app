@@ -44,8 +44,13 @@ class MyHomePage extends StatelessWidget {
                 ? MovieTile(
                     bloc: bloc,
                     count: 4,
+                    width: width,
                   )
-                : MovieTile(bloc: bloc, count: 2);
+                : MovieTile(
+                    bloc: bloc,
+                    count: 2,
+                    width: width,
+                  );
           }
 
           return Text('Error : ${snapshot.data}');
@@ -60,10 +65,12 @@ class MovieTile extends StatelessWidget {
     Key key,
     @required this.bloc,
     @required this.count,
+    @required this.width,
   }) : super(key: key);
 
   final MovieBloc bloc;
   final int count;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +89,7 @@ class MovieTile extends StatelessWidget {
             mainAxisSpacing: 16,
             childAspectRatio: 2 / 3.5,
             children: snapshot.data
-                .map((movie) => _createTile(movie, context))
+                .map((movie) => _createTile(movie, context, width))
                 .toList(),
           ),
         );
@@ -90,7 +97,8 @@ class MovieTile extends StatelessWidget {
     );
   }
 
-  Widget _createTile(Movie movie, BuildContext context) => Material(
+  Widget _createTile(Movie movie, BuildContext context, double width) =>
+      Material(
         shadowColor: Colors.grey[500],
         elevation: 15.0,
         borderRadius: BorderRadius.circular(8),
@@ -102,7 +110,9 @@ class MovieTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Image.network(
-                '$POSTER_PATH_URL${movie.posterPath}',
+                width >= 1000
+                    ? '$POSTER_PATH_URL/w500${movie.posterPath}'
+                    : '$POSTER_PATH_URL/w185${movie.posterPath}',
                 fit: BoxFit.contain,
                 width: MediaQuery.of(context).size.width,
               ),
