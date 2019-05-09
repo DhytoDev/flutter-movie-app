@@ -9,3 +9,13 @@ build/
 
 # Directory created by dartdoc
 doc/api/
+
+.firebase/
+
+firebase.json
+
+.firebaserc
+
+firebase-debug.log
+
+y/
